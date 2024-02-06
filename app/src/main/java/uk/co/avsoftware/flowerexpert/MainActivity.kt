@@ -26,9 +26,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
 
@@ -36,17 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController: NavHostController = rememberNavController()
             FlowerExpertTheme {
-                // A surface container using the 'background' color from the theme
-                MainScaffold() {
-
-                }
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    Greeting("Android")
-//                }
+                MainScaffold(navController)
             }
         }
     }
@@ -65,8 +61,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     FlowerExpertTheme {
-        MainScaffold {
-
-        }
+        MainScaffold(NavHostController(LocalContext.current))
     }
 }
