@@ -2,6 +2,7 @@ package uk.co.avsoftware.flowerexpert.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -17,7 +18,7 @@ fun PageOne(navHostController: NavHostController, modifier: Modifier = Modifier)
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            modifier = Modifier.padding(8.dp),
+            modifier = modifier,
             text =
             """
                     This is an example of a scaffold. It uses the Scaffold composable's parameters to create a screen with a simple top app bar, bottom app bar, and floating action button.

@@ -1,5 +1,6 @@
 package uk.co.avsoftware.flowerexpert.ui.home
 
+import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -7,29 +8,37 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import uk.co.avsoftware.flowerexpert.ui.common.IntentHandler
+import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeUiState
+import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewIntent
 import uk.co.avsoftware.flowerexpert.ui.nav.MainNavHost
 
 @Composable
-fun MainScaffold(navHostController: NavHostController) {
-    var presses by remember { mutableIntStateOf(0) }
+fun MainScaffold(
+    navHostController: NavHostController,
+    cameraController: LifecycleCameraController,
+    uiState: State<HomeUiState>,
+    intentHandler: IntentHandler<HomeViewIntent>
+) {
 
     Scaffold(
         topBar = { MainTopBar() },
         bottomBar = { MainBottomBar(navHostController) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { presses++ }) {
+            FloatingActionButton(onClick = {
+                intentHandler.receiveIntent(HomeViewIntent.TakePhotograph)
+            }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
     ) { innerPadding ->
         MainNavHost(
             navHostController = navHostController,
+            cameraController = cameraController,
+            uiState = uiState,
             modifier = Modifier.padding(innerPadding)
         )
     }

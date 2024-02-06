@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -63,10 +65,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
 
     // Pytorch
 //    implementation("org.pytorch:pytorch_android_lite:2.1.0")
-    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
+//    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -75,4 +79,27 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Hilt
+    val hiltVersion = "2.48.1"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+
+    val cameraxVersion = "1.3.1"
+
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
+
+    val timberVersion = "5.0.1"
+    implementation("com.jakewharton.timber:timber:$timberVersion")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
