@@ -6,24 +6,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.camera.view.CameraController
-import androidx.camera.view.LifecycleCameraController
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import uk.co.avsoftware.flowerexpert.ui.capture.CameraHelper
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
+import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewEvent
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    val cameraHelper = CameraHelper(this)
 
     val viewModel: HomeViewModel by viewModels()
 
@@ -36,20 +42,25 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        setContent {
-            val navController: NavHostController = rememberNavController()
-            val cameraController = remember {
-                LifecycleCameraController(applicationContext).apply {
-                    setEnabledUseCases(
-                        CameraController.IMAGE_CAPTURE or
-                                CameraController.VIDEO_CAPTURE
-                    )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.viewEvents.collect { homeViewEvent ->
+                    when (homeViewEvent) {
+                        is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
+                            Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
+                        }
+                    }
                 }
             }
+        }
+
+        setContent {
+            val navController: NavHostController = rememberNavController()
+
             FlowerExpertTheme {
                 MainScaffold(
                     navController,
-                    cameraController,
+                    viewModel.cameraController,
                     uiState = viewModel.state.collectAsState(),
                     intentHandler = viewModel
                 )

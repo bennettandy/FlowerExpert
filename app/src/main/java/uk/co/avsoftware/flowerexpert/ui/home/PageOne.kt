@@ -2,14 +2,13 @@ package uk.co.avsoftware.flowerexpert.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import uk.co.avsoftware.flowerexpert.ui.nav.Screen
 
 @Composable
 fun PageOne(navHostController: NavHostController, modifier: Modifier = Modifier){
@@ -28,7 +27,7 @@ fun PageOne(navHostController: NavHostController, modifier: Modifier = Modifier)
                     You have pressed the floating action button X times.
                 """.trimIndent(),
         )
-        Button(onClick = { navHostController.navigate("page_two") }){
+        Button(onClick = { navHostController.navigate(Screen.ScreenTwo.route) }){
             Text("Next")
         }
     }

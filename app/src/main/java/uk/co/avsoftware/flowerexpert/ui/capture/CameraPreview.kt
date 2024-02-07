@@ -18,6 +18,8 @@ fun CameraPreview(
             PreviewView(it).apply {
                 this.controller = controller
                 controller.bindToLifecycle(lifecycleOwner)
+            }.apply {
+                clipToOutline = true
             }
         },
         modifier = modifier

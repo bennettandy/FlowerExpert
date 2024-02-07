@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import uk.co.avsoftware.flowerexpert.ui.common.IntentHandler
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeUiState
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewIntent
-import uk.co.avsoftware.flowerexpert.ui.nav.MainNavHost
+import uk.co.avsoftware.flowerexpert.ui.nav.Navigation
 
 @Composable
 fun MainScaffold(
@@ -28,16 +28,19 @@ fun MainScaffold(
         topBar = { MainTopBar() },
         bottomBar = { MainBottomBar(navHostController) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                intentHandler.receiveIntent(HomeViewIntent.TakePhotograph)
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+            if (uiState.value.actionButtonVisible) {
+                FloatingActionButton(onClick = {
+                    intentHandler.receiveIntent(HomeViewIntent.TakePhotograph)
+                }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add")
+                }
             }
         }
     ) { innerPadding ->
-        MainNavHost(
-            navHostController = navHostController,
+        Navigation(
+            navController = navHostController,
             cameraController = cameraController,
+            intentHandler = intentHandler,
             uiState = uiState,
             modifier = Modifier.padding(innerPadding)
         )
