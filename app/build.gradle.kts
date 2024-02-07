@@ -69,8 +69,8 @@ dependencies {
 
 
     // Pytorch
-//    implementation("org.pytorch:pytorch_android_lite:2.1.0")
-//    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
+    implementation("org.pytorch:pytorch_android:2.1.0")
+    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

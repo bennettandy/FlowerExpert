@@ -20,11 +20,13 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import uk.co.avsoftware.flowerexpert.domain.BitmapToTensorInteractor
 import uk.co.avsoftware.flowerexpert.ui.capture.CameraHelper
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewEvent
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,6 +34,9 @@ class MainActivity : ComponentActivity() {
     val cameraHelper = CameraHelper(this)
 
     val viewModel: HomeViewModel by viewModels()
+
+//    @Inject
+//    lateinit var tensorInteractor: BitmapToTensorInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +53,9 @@ class MainActivity : ComponentActivity() {
                     when (homeViewEvent) {
                         is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
                             Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
+                            val tensorInteractor = BitmapToTensorInteractor()
+                            val tensor = tensorInteractor.convertToTensor(bitmap)
+                            Timber.d("Tensor Shape.size: ${tensor.shape().size}")
                         }
                     }
                 }
