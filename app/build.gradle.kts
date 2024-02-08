@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("io.realm.kotlin")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
@@ -97,6 +98,16 @@ dependencies {
 
     val timberVersion = "5.0.1"
     implementation("com.jakewharton.timber:timber:$timberVersion")
+
+    val tensorflowVersion = "0.4.0"
+    implementation("org.tensorflow:tensorflow-lite-task-vision:$tensorflowVersion")
+    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:$tensorflowVersion")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
+
+//    val realmVersion = "1.11.0"
+//    implementation("io.realm.kotlin:library-base:$realmVersion")
+//    implementation("io.realm.kotlin:library-sync:$realmVersion")// If using Device Sync
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$realmVersion") // If using coroutines with the SDK
 }
 
 // Allow references to generated code

@@ -25,7 +25,7 @@ fun MainScaffold(
 ) {
 
     Scaffold(
-        topBar = { MainTopBar() },
+        topBar = { MainTopBar(uiState) },
         bottomBar = { MainBottomBar(navHostController) },
         floatingActionButton = {
             if (uiState.value.actionButtonVisible) {

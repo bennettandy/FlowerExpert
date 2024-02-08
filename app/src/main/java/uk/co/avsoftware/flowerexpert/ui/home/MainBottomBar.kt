@@ -27,7 +27,7 @@ fun MainBottomBar(navController: NavHostController, modifier: Modifier = Modifie
         contentColor = MaterialTheme.colorScheme.primary,
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .align(Alignment.Bottom)
                 .padding(16.dp),

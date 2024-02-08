@@ -19,14 +19,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.pytorch.Module
 import timber.log.Timber
 import uk.co.avsoftware.flowerexpert.domain.BitmapToTensorInteractor
 import uk.co.avsoftware.flowerexpert.ui.capture.CameraHelper
-import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewEvent
+import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
-import javax.inject.Inject
+import java.io.File
+import java.io.FileOutputStream
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -34,9 +37,6 @@ class MainActivity : ComponentActivity() {
     val cameraHelper = CameraHelper(this)
 
     val viewModel: HomeViewModel by viewModels()
-
-//    @Inject
-//    lateinit var tensorInteractor: BitmapToTensorInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController: NavHostController = rememberNavController()
-
             FlowerExpertTheme {
                 MainScaffold(
                     navController,
@@ -90,6 +89,26 @@ class MainActivity : ComponentActivity() {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
         )
+    }
+
+
+    fun getAssetFile(assetName: String): String {
+        val file: File = File(filesDir, assetName)
+        if (file.exists() && file.length() > 0) {
+            return file.absolutePath
+        }
+
+        assets.open(assetName).use { `is` ->
+            FileOutputStream(file).use { os ->
+                val buffer = ByteArray(4 * 1024)
+                var read: Int
+                while (`is`.read(buffer).also { read = it } != -1) {
+                    os.write(buffer, 0, read)
+                }
+                os.flush()
+            }
+            return file.absolutePath
+        }
     }
 }
 

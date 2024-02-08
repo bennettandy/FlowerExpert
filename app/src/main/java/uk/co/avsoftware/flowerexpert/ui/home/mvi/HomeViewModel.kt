@@ -3,9 +3,13 @@ package uk.co.avsoftware.flowerexpert.ui.home.mvi
 import android.content.Context
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
+import uk.co.avsoftware.flowerexpert.data.classifier.TfLiteLandmarkClassifier
+import uk.co.avsoftware.flowerexpert.domain.model.Classification
+import uk.co.avsoftware.flowerexpert.ui.capture.LandmarkImageAnalyzer
 import uk.co.avsoftware.flowerexpert.ui.common.MviViewModel
 import javax.inject.Inject
 
@@ -15,11 +19,16 @@ class HomeViewModel @Inject constructor(
 ): MviViewModel<HomeViewIntent, HomeViewEvent, HomeUiState>(
     HomeUiState()
 ) {
+
     val cameraController: LifecycleCameraController =
         LifecycleCameraController(context).apply {
-            setEnabledUseCases(
-                CameraController.IMAGE_CAPTURE or
-                        CameraController.VIDEO_CAPTURE
+            setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
+            setImageAnalysisAnalyzer(
+                ContextCompat.getMainExecutor(context),
+                LandmarkImageAnalyzer(TfLiteLandmarkClassifier(context)){
+                    classifications ->  Timber.d("${classifications.size}")
+                    updateClassifications(classifications)
+                }
             )
         }
 
@@ -33,6 +42,13 @@ class HomeViewModel @Inject constructor(
         Timber.d("Take photograph")
         emitViewEvent(HomeViewEvent.TakePhotograph)
     }
+
+    private fun updateClassifications(classifications: List<Classification>){
+        _state.value = _state.value.copy(classifications = classifications)
+    }
 }
 
-data class HomeUiState( val actionButtonVisible: Boolean = false)
+data class HomeUiState(
+    val actionButtonVisible: Boolean = false,
+    val classifications: List<Classification> = emptyList()
+)

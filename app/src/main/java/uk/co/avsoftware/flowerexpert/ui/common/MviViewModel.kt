@@ -16,7 +16,7 @@ abstract class MviViewModel<I,E,S>(initialState: S) : ViewModel(), IntentHandler
         get() = _viewEvents
 
     private val userIntent = Channel<I>(Channel.UNLIMITED)
-    private val _state = MutableStateFlow(initialState)
+    val _state = MutableStateFlow(initialState)
     val state: StateFlow<S>
         get() = _state
 
