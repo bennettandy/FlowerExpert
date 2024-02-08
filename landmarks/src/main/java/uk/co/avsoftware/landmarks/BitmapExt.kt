@@ -1,4 +1,4 @@
-package uk.co.avsoftware.flowerexpert.ui.capture
+package uk.co.avsoftware.landmarks
 
 import android.graphics.Bitmap
 

@@ -1,11 +1,10 @@
-package uk.co.avsoftware.flowerexpert.ui.capture
+package uk.co.avsoftware.landmarks
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import uk.co.avsoftware.flowerexpert.data.classifier.TfLiteLandmarkClassifier
-import uk.co.avsoftware.flowerexpert.domain.classifier.LandmarkClassifier
 import uk.co.avsoftware.flowerexpert.domain.model.Classification
-import javax.inject.Inject
+import uk.co.avsoftware.landmarks.data.classifier.TfLiteLandmarkClassifier
+
 
 class LandmarkImageAnalyzer constructor(
     private val classifier: TfLiteLandmarkClassifier,

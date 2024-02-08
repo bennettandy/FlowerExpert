@@ -1,7 +1,6 @@
 package uk.co.avsoftware.flowerexpert.ui.home
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +22,7 @@ fun MainTopBar(uiState: State<HomeUiState>, modifier: Modifier = Modifier) {
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         title = {
-            Column() {
+            Column {
                 Text(
                     text = "Matched ${uiState.value.classifications.size} landmarks",
                     style = MaterialTheme.typography.titleMedium,

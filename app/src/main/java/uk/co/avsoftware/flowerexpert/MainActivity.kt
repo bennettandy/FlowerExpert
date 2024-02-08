@@ -12,19 +12,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import org.pytorch.Module
-import timber.log.Timber
-import uk.co.avsoftware.flowerexpert.domain.BitmapToTensorInteractor
 import uk.co.avsoftware.flowerexpert.ui.capture.CameraHelper
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
-import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewEvent
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
 import java.io.File
@@ -47,20 +39,20 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.viewEvents.collect { homeViewEvent ->
-                    when (homeViewEvent) {
-                        is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
-                            Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
-                            val tensorInteractor = BitmapToTensorInteractor()
-                            val tensor = tensorInteractor.convertToTensor(bitmap)
-                            Timber.d("Tensor Shape.size: ${tensor.shape().size}")
-                        }
-                    }
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.viewEvents.collect { homeViewEvent ->
+//                    when (homeViewEvent) {
+//                        is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
+//                            Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
+//                            val tensorInteractor = BitmapToTensorInteractor()
+//                            val tensor = tensorInteractor.convertToTensor(bitmap)
+//                            Timber.d("Tensor Shape.size: ${tensor.shape().size}")
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         setContent {
             val navController: NavHostController = rememberNavController()

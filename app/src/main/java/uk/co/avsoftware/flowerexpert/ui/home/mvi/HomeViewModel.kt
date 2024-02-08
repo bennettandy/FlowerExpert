@@ -7,10 +7,10 @@ import androidx.core.content.ContextCompat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import uk.co.avsoftware.flowerexpert.data.classifier.TfLiteLandmarkClassifier
 import uk.co.avsoftware.flowerexpert.domain.model.Classification
-import uk.co.avsoftware.flowerexpert.ui.capture.LandmarkImageAnalyzer
 import uk.co.avsoftware.flowerexpert.ui.common.MviViewModel
+import uk.co.avsoftware.landmarks.LandmarkImageAnalyzer
+import uk.co.avsoftware.landmarks.data.classifier.TfLiteLandmarkClassifier
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,8 +25,12 @@ class HomeViewModel @Inject constructor(
             setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
             setImageAnalysisAnalyzer(
                 ContextCompat.getMainExecutor(context),
-                LandmarkImageAnalyzer(TfLiteLandmarkClassifier(context)){
-                    classifications ->  Timber.d("${classifications.size}")
+                LandmarkImageAnalyzer(
+                    TfLiteLandmarkClassifier(
+                        context
+                    )
+                ) { classifications ->
+                    Timber.d("${classifications.size}")
                     updateClassifications(classifications)
                 }
             )

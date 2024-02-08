@@ -1,4 +1,4 @@
-package uk.co.avsoftware.flowerexpert.data.classifier
+package uk.co.avsoftware.landmarks.data.classifier
 
 import android.content.Context
 import android.graphics.Bitmap

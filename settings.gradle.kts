@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FlowerExpert"
 include(":app")
- 
+include(":landmarks")
