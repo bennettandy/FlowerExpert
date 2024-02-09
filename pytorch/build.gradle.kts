@@ -51,6 +51,8 @@ android {
 
 dependencies {
 
+    implementation(project(":common"))
+
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

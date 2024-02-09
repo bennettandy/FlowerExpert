@@ -23,7 +23,6 @@
         <activity
             android:name="uk.co.avsoftware.pytorch.MainPyTorchActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.FlowerExpert">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
