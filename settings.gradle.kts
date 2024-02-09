@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 rootProject.name = "FlowerExpert"
 include(":app")
 include(":landmarks")
+include(":pytorch")
+include(":common")

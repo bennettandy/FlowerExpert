@@ -6,7 +6,7 @@ import uk.co.avsoftware.flowerexpert.domain.model.Classification
 import uk.co.avsoftware.landmarks.data.classifier.TfLiteLandmarkClassifier
 
 
-class LandmarkImageAnalyzer constructor(
+class LandmarkImageAnalyzer(
     private val classifier: TfLiteLandmarkClassifier,
     private val onResults: (List<Classification>) -> Unit
 ) : ImageAnalysis.Analyzer {

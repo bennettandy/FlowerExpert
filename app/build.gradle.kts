@@ -27,8 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -55,6 +54,7 @@ android {
 dependencies {
 
     implementation(project(":landmarks"))
+    implementation(project(":pytorch"))
 
     implementation(libs.navigation.compose)
 
@@ -69,9 +69,9 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
 
-    // Pytorch
-    implementation(libs.pytorch.android)
-    implementation(libs.pytorch.android.torchvision)
+//    // Pytorch
+//    implementation(libs.pytorch.android)
+//    implementation(libs.pytorch.android.torchvision)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -94,12 +94,10 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.camera.extensions)
 
+    // Timber
     implementation(libs.timber)
 
-    implementation(libs.tensorflow.lite.task.vision)
-    implementation(libs.tensorflow.lite.gpu.delegate.plugin)
-    implementation(libs.tensorflow.lite.gpu)
-
+    // Realm
     implementation(libs.realm.base)
     implementation(libs.realm.sync)// If using Device Sync
     implementation(libs.kotlinx.coroutines.core) // If using coroutines with the SDK
