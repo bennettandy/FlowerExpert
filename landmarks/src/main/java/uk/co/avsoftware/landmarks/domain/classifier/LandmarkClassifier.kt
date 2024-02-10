@@ -1,4 +1,4 @@
-package uk.co.avsoftware.flowerexpert.domain.classifier
+package uk.co.avsoftware.landmarks.domain.classifier
 
 import android.graphics.Bitmap
 import uk.co.avsoftware.flowerexpert.domain.model.Classification

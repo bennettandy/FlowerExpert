@@ -9,19 +9,20 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
-import uk.co.avsoftware.flowerexpert.domain.classifier.LandmarkClassifier
+import uk.co.avsoftware.landmarks.domain.classifier.LandmarkClassifier
 import uk.co.avsoftware.flowerexpert.domain.model.Classification
 import javax.inject.Inject
 
-class TfLiteLandmarkClassifier @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val threshold: Float = 0.5f,
-    private val maxResults: Int = 3
+internal class TfLiteLandmarkClassifier(
+    context: Context,
+    threshold: Float = 0.5f,
+    maxResults: Int = 3,
+    modelPath: String = "landmarks.tflite"
 ): LandmarkClassifier {
 
     private var classifier: ImageClassifier? = null
 
-    private fun setupClassifier() {
+    init {
         val baseOptions = BaseOptions.builder()
             .setNumThreads(2)
             .build()
@@ -34,7 +35,7 @@ class TfLiteLandmarkClassifier @Inject constructor(
         try {
             classifier = ImageClassifier.createFromFileAndOptions(
                 context,
-                "landmarks.tflite",
+                modelPath,
                 options
             )
         } catch (e: IllegalStateException) {
@@ -43,9 +44,6 @@ class TfLiteLandmarkClassifier @Inject constructor(
     }
 
     override fun classify(bitmap: Bitmap, rotation: Int): List<Classification> {
-        if(classifier == null) {
-            setupClassifier()
-        }
 
         val imageProcessor = ImageProcessor.Builder().build()
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))

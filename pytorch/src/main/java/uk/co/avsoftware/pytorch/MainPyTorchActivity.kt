@@ -1,5 +1,6 @@
 package uk.co.avsoftware.pytorch
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,12 +28,16 @@ class MainPyTorchActivity : ComponentActivity() {
         // load image as Bitmap
         val bitmap = BitmapFactory.decodeStream(assets.open("goldfish.jpg"))
 
+
+        var scaled = Bitmap.createScaledBitmap(bitmap, 224, 224, false)
+
         // load model
         val module: Module = Module.load(getLocalAssetFileAsPath("model.ptl"))
 
+
         // prep input Tensor
         val inputTensor: Tensor = TensorImageUtils.bitmapToFloat32Tensor(
-            bitmap,
+            scaled,
             TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB
         )
 
@@ -49,15 +54,15 @@ class MainPyTorchActivity : ComponentActivity() {
 
 
         // obtain max value from scores and obtain class
-        var maxScore = -Float.MAX_VALUE
-        var maxScoreIdx = -1
-        for (i in 0 until scores.size) {
-            if (scores[i] > maxScore) {
-                maxScore = scores[i]
-                maxScoreIdx = i
-            }
-        }
-        val className: String = IMAGENET_CLASSES[maxScoreIdx]
+//        var maxScore = -Float.MAX_VALUE
+//        var maxScoreIdx = -1
+//        for (i in 0 until scores.size) {
+//            if (scores[i] > maxScore) {
+//                maxScore = scores[i]
+//                maxScoreIdx = i
+//            }
+//        }
+        val className: String = IMAGENET_CLASSES[max]
 
 
 

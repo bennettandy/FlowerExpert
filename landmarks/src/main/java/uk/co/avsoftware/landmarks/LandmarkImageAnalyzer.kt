@@ -4,10 +4,11 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import uk.co.avsoftware.flowerexpert.domain.model.Classification
 import uk.co.avsoftware.landmarks.data.classifier.TfLiteLandmarkClassifier
+import uk.co.avsoftware.landmarks.domain.classifier.LandmarkClassifier
 
 
 class LandmarkImageAnalyzer(
-    private val classifier: TfLiteLandmarkClassifier,
+    private val classifier: LandmarkClassifier,
     private val onResults: (List<Classification>) -> Unit
 ) : ImageAnalysis.Analyzer {
 

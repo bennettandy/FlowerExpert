@@ -10,12 +10,13 @@ import timber.log.Timber
 import uk.co.avsoftware.flowerexpert.domain.model.Classification
 import uk.co.avsoftware.flowerexpert.ui.common.MviViewModel
 import uk.co.avsoftware.landmarks.LandmarkImageAnalyzer
-import uk.co.avsoftware.landmarks.data.classifier.TfLiteLandmarkClassifier
+import uk.co.avsoftware.landmarks.domain.classifier.LandmarkClassifier
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    classifier: LandmarkClassifier
 ): MviViewModel<HomeViewIntent, HomeViewEvent, HomeUiState>(
     HomeUiState()
 ) {
@@ -26,9 +27,7 @@ class HomeViewModel @Inject constructor(
             setImageAnalysisAnalyzer(
                 ContextCompat.getMainExecutor(context),
                 LandmarkImageAnalyzer(
-                    TfLiteLandmarkClassifier(
-                        context
-                    )
+                    classifier
                 ) { classifications ->
                     Timber.d("${classifications.size}")
                     updateClassifications(classifications)
