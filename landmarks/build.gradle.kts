@@ -35,9 +35,6 @@ android {
 }
 
 dependencies {
-
-//    androidTestImplementation(project(":test"))
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -45,21 +42,16 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Truth
-    androidTestImplementation("com.google.truth:truth:1.1")
-
     implementation(libs.timber)
 
     // Tensorflow Lite
     implementation(libs.tensorflow.lite.task.vision)
-//    implementation(libs.tensorflow.lite.gpu.delegate.plugin)
-//    implementation(libs.tensorflow.lite.gpu)
 
     // CameraX
     implementation(libs.camera.core)
 
-
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
 }
