@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.timber)
 
     // Tensorflow Lite
+//    implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.task.vision)
 
     // CameraX

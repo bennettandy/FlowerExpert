@@ -27,7 +27,6 @@ fun PageTwo(
     cameraController: LifecycleCameraController,
     modifier: Modifier = Modifier
 ) {
-
     CameraPreview(
         controller = cameraController,
         modifier = modifier

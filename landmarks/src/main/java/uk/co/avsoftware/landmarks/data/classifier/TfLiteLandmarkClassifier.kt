@@ -32,15 +32,15 @@ internal class TfLiteLandmarkClassifier(
             .setScoreThreshold(threshold)
             .build()
 
-        try {
+        //try {
             classifier = ImageClassifier.createFromFileAndOptions(
                 context,
                 modelPath,
                 options
             )
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
+//        } catch (e: IllegalStateException) {
+//            e.printStackTrace()
+//        }
     }
 
     override fun classify(bitmap: Bitmap, rotation: Int): List<Classification> {

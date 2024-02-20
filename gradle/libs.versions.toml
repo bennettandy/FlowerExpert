@@ -15,7 +15,8 @@ pytorch_android_liteVersion = "2.1.0"
 pytorch_androidVersion = "2.1.0"
 realmVersion = "1.11.0"
 tensorflowLiteGpuVersion = "2.9.0"
-tensorflowVersion = "0.4.0"
+tensorflowLiteVersion = "2.4.0"
+tensorflowVersion = "0.3.0"
 timber = "5.0.1"
 agp = "8.2.2"
 kotlin = "1.9.0"
@@ -45,6 +46,7 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
 pytorch_android = { module = "org.pytorch:pytorch_android", version.ref = "pytorch_androidVersion" }
 pytorch_android_torchvision = { module = "org.pytorch:pytorch_android_torchvision", version.ref = "pytorch_androidVersion" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLiteVersion" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpuVersion" }
 tensorflow-lite-gpu-delegate-plugin = { module = "org.tensorflow:tensorflow-lite-gpu-delegate-plugin", version.ref = "tensorflowVersion" }
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowVersion" }
