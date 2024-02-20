@@ -6,32 +6,39 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import uk.co.avsoftware.flowerexpert.ui.capture.CameraHelper
 import uk.co.avsoftware.flowerexpert.ui.home.MainScaffold
+import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewEvent
 import uk.co.avsoftware.flowerexpert.ui.home.mvi.HomeViewModel
 import uk.co.avsoftware.flowerexpert.ui.theme.FlowerExpertTheme
-import java.io.File
-import java.io.FileOutputStream
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val cameraHelper = CameraHelper(this)
+    private val cameraHelper: CameraHelper by lazy { CameraHelper(this) }
 
-    val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // demo code
+        asyncDemoCode()
 
         if (!hasRequiredPermissions()) {
             ActivityCompat.requestPermissions(
@@ -39,20 +46,11 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.viewEvents.collect { homeViewEvent ->
-//                    when (homeViewEvent) {
-//                        is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
-//                            Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
-//                            val tensorInteractor = BitmapToTensorInteractor()
-//                            val tensor = tensorInteractor.convertToTensor(bitmap)
-//                            Timber.d("Tensor Shape.size: ${tensor.shape().size}")
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.viewEvents.collect(::handleHomeViewEvent)
+            }
+        }
 
         setContent {
             val navController: NavHostController = rememberNavController()
@@ -63,6 +61,35 @@ class MainActivity : ComponentActivity() {
                     uiState = viewModel.state.collectAsState(),
                     intentHandler = viewModel
                 )
+            }
+        }
+    }
+
+    private fun asyncDemoCode(){
+
+        suspend fun request1(): String {
+            delay(3000)
+            return "answer 1"
+        }
+
+        suspend fun request2(): String {
+            delay(3000)
+            return "answer 2"
+        }
+
+        lifecycleScope.launch {
+            val deferred1: Deferred<String> = async { request1() }
+            val deferred2: Deferred<String> = async { request2() }
+
+            Timber.d("Answer 1: ${deferred1.await()}")
+            Timber.d("Answer 2: ${deferred2.await()}")
+        }
+    }
+
+    private fun handleHomeViewEvent(homeViewEvent: HomeViewEvent){
+        when (homeViewEvent) {
+            is HomeViewEvent.TakePhotograph -> cameraHelper.takePhoto(viewModel.cameraController) { bitmap ->
+                Timber.d("Got Bitmap H:${bitmap.height}, W:${bitmap.width}")
             }
         }
     }
@@ -84,20 +111,3 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    FlowerExpertTheme {
-//        MainScaffold(NavHostController(LocalContext.current))
-//    }
-//}
